@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+traceroute slash16.org
