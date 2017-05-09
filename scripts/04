@@ -10,10 +10,7 @@ if [ ! -f $MD5_FILE ]; then
 else
     md5sum $TRACKED_FILE | awk '{print $1}' > $TMP_MD5_FILE;
     if [ ! "$(diff $MD5_FILE $TMP_MD5_FILE)" = "" ]; then
-	echo modif;
 	mv $TMP_MD5_FILE $MD5_FILE;
 	echo $MODIF_MAIL | mail root -s "crontab modified"
-    else
-	echo nomodif;
     fi
 fi
