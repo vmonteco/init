@@ -1,2 +1,19 @@
 #!/usr/bin/env sh
 
+TRACKED_FILE=/etc/crontab
+MD5_FILE=/var/crontab_checksum
+TMP_MD5_FILE=/var/crontab_checksum_tmp
+MODIF_MAIL="Hey! $TRACKED_FILE has been modified, check it out!"
+
+if [ ! -f $MD5_FILE ]; then
+    md5sum $TRACKED_FILE | awk '{print $1}' > $MD5_FILE;
+else
+    md5sum $TRACKED_FILE | awk '{print $1}' > $TMP_MD5_FILE;
+    if [ ! "$(diff $MD5_FILE $TMP_MD5_FILE)" = "" ]; then
+	echo modif;
+	mv $TMP_MD5_FILE $MD5_FILE;
+	echo $MODIF_MAIL | mail root -s "crontab modified"
+    else
+	echo nomodif;
+    fi
+fi
