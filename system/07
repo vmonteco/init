@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+systemctl status sshd.service | grep "Main PID" | awk '{print $3}'
